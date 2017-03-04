@@ -1,0 +1,2 @@
+# bind_reduce_generate_proxy_apply_call_promise
+ES6_bind_reduce_generate_proxy_apply_call_promise
