@@ -1,0 +1,60 @@
+<div class="row">
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h3 class="panel-title">Reduce</h3>
+		</div>
+		<div class="panel-body">
+			<pre>Sum From Left To Right -- <span class="text-primary">syntax</span>: arr.reduce(callback, [initialValue])</pre>
+			<p>
+				let numAry = [0, 1, 2, 3];<br />
+				let total = numAry.reduce(function (preVal, curElement) {<br />
+					return preVal+curElement;<br />
+				}, 0);<br />
+				console.log('16 -- total is: '+total);
+			</p>
+			<pre>flatten_array</pre>
+			<p>
+				let list0 = [0, [1, [2, [3, [4, [5]]]]]];<br />
+	            const flatten = arr => arr.reduce(<br />
+	                (preVal, currVal) => preVal.concat(<br />
+	                	// flatten call itself.<br />
+					    Array.isArray(currVal) ? flatten(currVal) : currVal<br />
+					), []<br />
+	            );<br />
+	            let resultAry = flatten(list0);<br />
+	            console.log('26 -- resultAry is: ', resultAry);
+			</p>
+		</div>
+	</div>
+	<div class="panel panel-warning">
+		<div class="panel-heading">
+			<h3 class="panel-title">Map</h3>
+		</div>
+		<div class="panel-body">
+			let fahrenheit = [0, 32, 45, 50, 75, 80, 99, 120];<br />
+        	let celcius = fahrenheit.map(<br />
+        		(elem, idx) => {<br />
+        			// have {}, need return, without {}, donot need retrun;<br />
+        			return Math.round((elem - 32) * 5 / 9);<br />
+        		}<br />
+        	);<br />
+        	console.log(`36 -- celcius is: ${celcius}.`);
+		</div>
+	</div>
+	<div class="panel panel-danger">
+		<div class="panel-heading">
+			<h3 class="panel-title">Filter</h3>
+		</div>
+		<div class="panel-body">
+			Use it when: You want to remove unwanted elements based on a condition.
+			<pre><span class="text-danger">syntax:</span> array.filter((eachElem, index, newArr) => {dosth... return newArr});
+			</pre>
+			<p class="bg-warning">
+				let arr0 = [12, 8, 4, 9, 77, 2, 100];<br />
+	        	// get elem which is greater than 10;<br />
+	        	let rzAry = arr0.filter((eachElem, idx, newArr) => eachElem >= 10);<br />
+	        	console.log(`44 -- rzAry is: ${rzAry}.`);
+			</p>
+		</div>
+	</div>
+</div>

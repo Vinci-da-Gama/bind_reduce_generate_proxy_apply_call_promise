@@ -1,0 +1,31 @@
+<div class="row">
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title">Generate</h3>
+		</div>
+		<div class="panel-body">
+			<pre>
+				syntax: function* generator() {
+					...
+				};
+				let sth = generator();
+				...
+			</pre>
+			<p class="bg-info">
+				function *foo(x) {<br />
+				    var y = 2 * (yield (x + 1));<br />
+				    var z = yield (y / 3);<br />
+				    return (x + y + z);<br />
+				}<br />
+
+				var it = foo( 5 );<br />
+
+				// note: not sending anything into `next()` here<br />
+				// parameter send into generator function always replace value of last yield<br />
+				console.log( it.next() );       // { value:6, done:false }<br />
+				console.log( it.next( 12 ) );   // { value:8, done:false }<br />
+				console.log( it.next( 13 ) );   // { value:42, done:true }
+			</p>
+		</div>
+	</div>
+</div>

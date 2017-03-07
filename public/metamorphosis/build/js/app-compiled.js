@@ -37,7 +37,51 @@
 (function () {
 	var rM = angular.module('brgpacp.router');
 
-	// rM
+	rM.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+		$urlRouterProvider.when('', '/');
+		$urlRouterProvider.otherwise('/');
+
+		$stateProvider.state('home', {
+			url: '/',
+			views: {
+				'': {
+					templateUrl: './_partials/home.html',
+					controller: 'homeCtrl',
+					controlerAs: 'hc'
+				},
+				'pl@home': {
+					templateUrl: './_partials/parallel_l.html',
+					controller: 'homeLeftCtrl',
+					controllerAs: 'hlc'
+				},
+				'pr@home': {
+					templateUrl: './_partials/parallel_r.html',
+					controller: 'homeRightCtrl',
+					controllerAs: 'hrc'
+				}
+			}
+		}).state('bindproxy', {
+			url: '/bp',
+			templateUrl: './_partials/bp.html',
+			controller: 'bindproxyCtrl',
+			controllerAs: 'bpc'
+		}).state('bindproxy.bpl', {
+			url: '/bpl',
+			templateUrl: './_partials/nest_l.html',
+			controller: 'bpLeftCtrl',
+			controllerAs: 'bplc'
+		}).state('bindproxy.bpr', {
+			url: '/bpr',
+			templateUrl: './_partials/nest_r.html',
+			controller: 'bpRightCtrl',
+			controllerAs: 'bprc'
+		}).state('acp', {
+			url: '/acp',
+			templateUrl: './_partials/acp.html',
+			controller: 'acpCtrl',
+			controllerAs: 'acp'
+		});
+	}]);
 })();
 'use strict';
 
@@ -48,16 +92,70 @@
 
 /*jshint esversion: 6 */
 (function () {
-	var ctrlM = angular.module('brgpacp.ctrl');
+    var ctrlM = angular.module('brgpacp.ctrl');
 
-	// ctrlM
-})();
-'use strict';
+    ctrlM.controller('homeCtrl', ['$log', function ($log) {
+        $log.log('homepage');
+    }]);
 
-(function () {
-	var dM = angular.module('brgpacp.dir');
+    ctrlM.controller('homeLeftCtrl', ['$log', function ($log) {
+        $log.log('homeLeft page');{
+            var numAry = [0, 1, 2, 3];
+            var total = numAry.reduce(function (preVal, curElement) {
+                return preVal + curElement;
+            }, 0);
+            console.log('16 -- total is: ' + total);
+        }
 
-	// dM
+        {
+            var list0 = [0, [1, [2, [3, [4, [5]]]]]];
+            var flatten = function flatten(arr) {
+                return arr.reduce(function (preVal, currVal) {
+                    return preVal.concat(Array.isArray(currVal) ? flatten(currVal) : currVal);
+                }, []);
+            };
+            var resultAry = flatten(list0);
+            console.log('26 -- resultAry is: ' + resultAry + '.');
+        }
+
+        {
+            var fahrenheit = [0, 32, 45, 50, 75, 80, 99, 120];
+            var celcius = fahrenheit.map(function (elem, idx) {
+                // have {}, need return, without {}, donot need retrun;
+                return Math.round((elem - 32) * 5 / 9);
+            });
+            console.log('36 -- celcius is: ' + celcius + '.');
+        }
+
+        {
+            var arr0 = [12, 8, 4, 9, 77, 2, 100];
+            // get elem which is greater than 10;
+            var rzAry = arr0.filter(function (eachElem, idx, newArr) {
+                return eachElem >= 10;
+            });
+            console.log('44 -- rzAry is: ' + rzAry + '.');
+        }
+    }]);
+
+    ctrlM.controller('homeRightCtrl', ['$log', function ($log) {
+        $log.log('homeRight page');
+    }]);
+
+    ctrlM.controller('bindproxyCtrl', ['$log', function ($log) {
+        $log.log('bind-proxy');
+    }]);
+
+    ctrlM.controller('bpLeftCtrl', ['$log', function ($log) {
+        $log.log('bp l');
+    }]);
+
+    ctrlM.controller('bpRightCtrl', ['$log', function ($log) {
+        $log.log('bp r');
+    }]);
+
+    ctrlM.controller('acpCtrl', ['$log', function ($log) {
+        $log.log('acp page');
+    }]);
 })();
 'use strict';
 
@@ -65,6 +163,13 @@
 	var cdM = angular.module('brgpacp.cust.dir');
 
 	// cdM
+})();
+'use strict';
+
+(function () {
+	var dM = angular.module('brgpacp.dir');
+
+	// dM
 })();
 'use strict';
 

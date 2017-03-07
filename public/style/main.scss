@@ -15,6 +15,16 @@ footer.navbar-fixed-bottom {
 	}
 }
 
+.link-active {
+	font-weight: bold;
+	color: blue !important;
+	text-align: center;
+}
+
+.mlr-auto {
+	margin: 0 auto;
+}
+
 /* responsive-table */
 @media screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px)  {
 
