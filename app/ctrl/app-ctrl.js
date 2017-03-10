@@ -55,6 +55,31 @@
 
     ctrlM.controller('bpLeftCtrl', ['$log', function($log) {
         $log.log('bp l');
+        {
+            this.x = 9;
+            let sthModule = {
+                x: 81,
+                getX: function () { return this.x; }
+            };
+            let getXfromOutside = sthModule.getX;
+            let bindToGetX = getXfromOutside.bind(sthModule);
+            console.log(`66 -- bindToGetX() is: ${bindToGetX()}.`);
+        }
+
+        function whenBloomer() {
+            this.petalCount = Math.ceil(Math.random() * 12) + 1;
+        }
+        whenBloomer.prototype.startBloom = function () {
+            console.log('73 -- this is: ', this);
+            window.setTimeout(this.Boolmed.bind(this), 2000);
+        };
+        whenBloomer.prototype.Boolmed = function () {
+            console.log('76 -- I am a beautiful flower with ' + this.petalCount + ' petals!');
+        };
+
+        let flower = new whenBloomer();
+        flower.startBloom();
+
     }]);
 
     ctrlM.controller('bpRightCtrl', ['$log', function($log) {

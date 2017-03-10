@@ -147,6 +147,32 @@
 
     ctrlM.controller('bpLeftCtrl', ['$log', function ($log) {
         $log.log('bp l');
+        {
+            this.x = 9;
+            var sthModule = {
+                x: 81,
+                getX: function getX() {
+                    return this.x;
+                }
+            };
+            var getXfromOutside = sthModule.getX;
+            var bindToGetX = getXfromOutside.bind(sthModule);
+            console.log('66 -- bindToGetX() is: ' + bindToGetX() + '.');
+        }
+
+        function whenBloomer() {
+            this.petalCount = Math.ceil(Math.random() * 12) + 1;
+        }
+        whenBloomer.prototype.startBloom = function () {
+            console.log('73 -- this is: ', this);
+            window.setTimeout(this.Boolmed.bind(this), 2000);
+        };
+        whenBloomer.prototype.Boolmed = function () {
+            console.log('76 -- I am a beautiful flower with ' + this.petalCount + ' petals!');
+        };
+
+        var flower = new whenBloomer();
+        flower.startBloom();
     }]);
 
     ctrlM.controller('bpRightCtrl', ['$log', function ($log) {
@@ -159,10 +185,164 @@
 })();
 'use strict';
 
+/*jshint esversion: 6 */
+/*jshint sub:true*/
 (function () {
 	var cdM = angular.module('brgpacp.cust.dir');
 
-	// cdM
+	cdM.directive('proxyExplain', [function () {
+		return {
+			scope: {},
+			controller: function controller($scope, $element, $attrs, $transclude) {
+				{
+					var targetObj = {};
+					var validationHandler = {
+						set: function set(target, propName, custVal) {
+							if (propName === 'age') {
+								if (!Number.isInteger(custVal)) {
+									throw new TypeError('Age must be integer!!!');
+								}
+								if (custVal >= 200) {
+									throw new RangeError('Now, nobody is older than 200 years!!!');
+								}
+							}
+
+							target[propName] = custVal;
+							return true;
+						}
+					};
+					var personInstance = new Proxy(targetObj, validationHandler);
+					personInstance.age = 100;
+					console.log('28 -- personInstance.age is: ' + personInstance.age + '.');
+					// personInstance.age = 'Young';
+					// console.log(`30 -- personInstance.age is: ${personInstance.age}.`);
+					// personInstance.age = 300;
+					// console.log(`32 -- personInstance.age is: ${personInstance.age}.`);
+				}
+
+				{
+					var browserObj = {
+						browsers: ['IE', 'NetSpace']
+					};
+					var browserHandler = {
+						get: function get(target, propName, custVal) {
+							if (propName === 'lastBrowser') {
+								var len = target.browsers.length;
+								return target.browsers[len - 1];
+							}
+							return target[propName];
+						},
+						set: function set(target, propName, custVal) {
+							var lb = 'lastBrowser';
+							if (propName === lb) {
+								target.browsers.push(custVal);
+								return true;
+							}
+							if (angular.isString(custVal)) {
+								custVal = [custVal];
+							}
+							if (angular.isNumber(custVal) && propName !== lb) {
+								var str = custVal.toString();
+								custVal = [str];
+							}
+
+							target[propName] = custVal;
+							return true;
+						}
+					};
+					var browsersProxy = new Proxy(browserObj, browserHandler);
+					console.log('66 -- browsersProxy.browsers are ' + browsersProxy.browsers + ' -- browsersProxy.browsers[0] is: ' + browsersProxy.browsers[0] + '.');
+					browsersProxy.anythingTobeFirstElement = 'FireFox';
+					console.log('68 -- (\u8FD9\u4E2A\u521B\u5EFA\u4E86\u4E00\u4E2A\u65B0\u7684array, key is anythingTobeFirstElement) browsersProxy.anythingTobeFirstElement is: ' + browsersProxy.anythingTobeFirstElement + '.');
+					browsersProxy.browsers = 0;
+					browsersProxy.lastBrowser = 'ThisIs-LastBrowser';
+					console.log('71 -- browsersProxy.browsers is ' + browsersProxy.browsers + '.');
+				}
+
+				{
+					var targetAry = [{ name: 'Firefox', type: 'WuHaHaHaHaHaHaHa' }, { name: 'SeaMonkey', type: 'WuHaHaHaHaHaHaHa' }, { name: 'Thunderbird', type: 'mailer' }];
+					var targetHandler = {
+						get: function get(target, propName, custVal) {
+							if (propName in target) {
+								return target[propName];
+							}
+							if (propName === 'qty') {
+								return target.length;
+							}
+
+							var result = void 0,
+							    types = {};
+
+							var _iteratorNormalCompletion = true;
+							var _didIteratorError = false;
+							var _iteratorError = undefined;
+
+							try {
+								for (var _iterator = target[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+									var eachElem = _step.value;
+
+									if (eachElem.name === propName) {
+										result = eachElem;
+									}
+									console.log('96 -- eachElem.type: ', eachElem.type);
+									console.log('97 -- propName is: ' + propName + '.');
+									console.log('98 -- 以下这个if condition 的妙处在于一箭双雕: \n 1. 直接定义了新的 property在types obj 内部。 \n 2. 只有 eachElem.type 是存在的（比如： WuHaHaHaHaHaHaHa）， 才会准入，\n 这样就等同于 eachElem.type === propName, 而且还直接加了定义新property.');
+									if (types[eachElem.type]) {
+										types[eachElem.type].push(eachElem);
+										console.log('101 -- types[eachElem.type] is:', types[eachElem.type]);
+									} else {
+										console.log('103 -- eachElem is: ', eachElem);
+										types[eachElem.type] = [eachElem];
+									}
+								}
+							} catch (err) {
+								_didIteratorError = true;
+								_iteratorError = err;
+							} finally {
+								try {
+									if (!_iteratorNormalCompletion && _iterator.return) {
+										_iterator.return();
+									}
+								} finally {
+									if (_didIteratorError) {
+										throw _iteratorError;
+									}
+								}
+							}
+
+							if (propName === 'allTypes') {
+								return Object.keys(types);
+							}
+							if (result) {
+								return result;
+							}
+							if (propName in types) {
+								return types[propName];
+							}
+
+							return undefined;
+						}
+					};
+
+					var pdsProxy = new Proxy(targetAry, targetHandler);
+
+					console.log('124 -- ', pdsProxy[0]);
+					console.log('125 -- ', pdsProxy['Firefox']);
+					console.log('126 -- ', pdsProxy['Chrome']);
+					console.log('127 -- ', pdsProxy.WuHaHaHaHaHaHaHa);
+					console.log('128 -- ', pdsProxy.randomType);
+					console.log('129 -- ', pdsProxy.allTypes);
+					console.log('130 -- ', pdsProxy.qty);
+				}
+			},
+			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
+			restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment
+			// template: '',
+			templateUrl: './_partials/directive-tmpl/proxy-explain-tmpl.html',
+			transclude: true,
+			link: function link($scope, iElm, iAttrs, controller) {}
+		};
+	}]);
 })();
 'use strict';
 

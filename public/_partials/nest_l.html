@@ -1,1 +1,27 @@
-<p>nest-left Bind</p>
+<div class="container">
+	<p>nest-left Bind</p>
+	<pre>
+	this.x = 9;
+        let sthModule = {
+            x: 81,
+            getX: function () { return this.x; }
+        };
+        <span class="text-success">let getXfromOutside = sthModule.getX;</span>
+        <cite class="text-info">let bindToGetX = getXfromOutside.bind(sthModule);</cite>
+        console.log(`66 -- bindToGetX() is: ${bindToGetX()}.`);
+	</pre>
+	<pre>
+	function whenBloomer() {
+            this.<span class="bg-info">petalCount</span> = Math.ceil(Math.random() * 12) + 1;
+        }
+        whenBloomer.prototype.<span class="bg-success">startBloom</span> = function () {
+            <span class="text-primary">window.setTimeout(this.Boolmed.bind(this), 2000);</span>
+        };
+        whenBloomer.prototype.<span class="text-danger">Boolmed </span>= function () {
+            console.log('76 -- I am a beautiful flower with ' + this.<span class="bg-info">petalCount</span> + ' petals!');
+        };
+
+        let flower = new whenBloomer();
+        flower.<span class="bg-success">startBloom</span>();
+	</pre>
+</div>
