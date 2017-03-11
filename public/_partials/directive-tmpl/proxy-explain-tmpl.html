@@ -87,7 +87,7 @@
 				}
 				console.log('96 -- eachElem.type: ', eachElem.type);
 				console.log(`97 -- propName is: ${propName}.`);
-				console.log('98 -- 以下这个if condition 的妙处在于一箭双雕: <br /> 1. 直接定义了新的 property在types obj 内部。 <br /> 2. 只有 eachElem.type 是存在的（比如： WuHaHaHaHaHaHaHa）， 才会准入，<br /> 这样就等同于 eachElem.type === propName, 而且还直接加了定义新property.');
+				console.log('98 -- 以下这个if condition 的妙处在于一箭双雕: <br /> 1. 直接定义了新的 property在types obj 内部。        <br /> 2. 只有 eachElem.type 是存在的（比如： WuHaHaHaHaHaHaHa）， 才会准入，    <br /> 这样就等同于 eachElem.type === propName, 而且还直接加了定义新property.');
 				if (types[eachElem.type]) {
 					types[eachElem.type].push(eachElem);
 					console.log('101 -- types[eachElem.type] is:', types[eachElem.type]);

@@ -8,17 +8,18 @@
         };
         <span class="text-success">let getXfromOutside = sthModule.getX;</span>
         <cite class="text-info">let bindToGetX = getXfromOutside.bind(sthModule);</cite>
-        console.log(`66 -- bindToGetX() is: ${bindToGetX()}.`);
+        console.log(`69 -- bindToGetX() is: ${bindToGetX()}.`);
 	</pre>
 	<pre>
 	function whenBloomer() {
             this.<span class="bg-info">petalCount</span> = Math.ceil(Math.random() * 12) + 1;
         }
         whenBloomer.prototype.<span class="bg-success">startBloom</span> = function () {
+            console.log('76 -- this is: ', this);
             <span class="text-primary">window.setTimeout(this.Boolmed.bind(this), 2000);</span>
         };
         whenBloomer.prototype.<span class="text-danger">Boolmed </span>= function () {
-            console.log('76 -- I am a beautiful flower with ' + this.<span class="bg-info">petalCount</span> + ' petals!');
+            console.log('80 -- I am a beautiful flower with ' + this.<span class="bg-info">petalCount</span> + ' petals!');
         };
 
         let flower = new whenBloomer();

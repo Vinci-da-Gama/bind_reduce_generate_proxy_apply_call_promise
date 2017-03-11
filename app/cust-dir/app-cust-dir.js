@@ -140,4 +140,31 @@
 		};
 	}]);
 
+	cdM.directive('es6PromiseTable', [function () {
+		return {
+			scope: {
+				'tableData': '@'
+			},
+			controller: function ($scope, $element, $attrs, $transclude) {
+				$scope.tbDataObj = angular.fromJson($scope.tableData);
+				console.log('150 -- $scope.tbDataObj: ', $scope.tbDataObj);
+
+				$scope.titles = Object.keys($scope.tbDataObj[0]);
+				console.log('153 -- $scope.titles: ', $scope.titles);
+
+				$scope.tbs = [];
+				$scope.tbDataObj.reduce((preVal, currElement) => {
+					if (currElement !== null) {
+						$scope.tbs.push(currElement);
+					}
+				});
+
+			},
+			restrice: 'E',
+			templateUrl: './_partials/directive-tmpl/es6-promise-table.html',
+			// transclude: true,
+			link: function (iScope, iElem, iAttrs, iCtrl) {}
+		};
+	}]);
+
 })();

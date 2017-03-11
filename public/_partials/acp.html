@@ -1,20 +1,128 @@
 <div class="row">
-	<div class="col-xs-12 col-sm-4">
-		<div class="page-header">
-		  <h3>Apply</h3>
+	<p class="container">
+		<span class="text-danger">apply</span> works in almost exactly the same way as <span class="text-danger">call</span>. The <span class="text-primary">difference</span> is that instead of a series of arguments --- <b>function.call(thisArg, arg1, arg2, ...)</b> ---, <span class="text-danger">apply</span> takes an array of values --- <b>fun.apply(thisArg, [argsArray])</b> --- to use in its invocation. <br /> --- 但其实可以通用， 如果argument 是array，可以用 spread opeartor ---> ...arr.
+	</p>
+	<p class="container bg-success">
+		call和apply是为了动态改变this而出现的，当一个object没有某个方法，但是其他的obj有，我们可以借助call或apply用其它对象的方法来操作, 这样就避免了重复定义。<br />
+		换句话说，就是为了改变函数体内部 this 的指向。因为 JavaScript 的函数存在「定义时上下文」和「运行时上下文」以及「上下文是可以改变的」这样的概念。<br />
+		<span class="text-primary">这里特别说明下（) => {} 的this 和 function() {} 的this 是不一样的。</span>
+		具体区别是什么?<br />
+		function () {} 的<span class="text-danger">this</span> 是指{} 外面一层所指代的obj.<br />
+		() => {} 的<span class="text-danger">this</span> 是指{}内部所指代的obj，也就是本身，也叫lexical this.<br />
+	</p>
+	<div class="col-xs-12 col-sm-8">
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<div class="page-header">
+				  <h3>Apply</h3>
+				  <p class="bg-warning text-info">
+				  	Use .bind() when you want that function to later be called with a certain context, useful in events.<br />
+				  	Use .call() or .apply() when you want to invoke the funciton immediately, and modify the context.
+				  </p>
+				</div>
+				<div class="alert alert-info">
+					<!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> -->
+					<strong>Syntax:</strong> fun.apply(thisArg, [argsArray])
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-6">
+				<div class="page-header">
+				  <h3>Call</h3>
+				  <p class="bg-warning text-info">
+				  	Use .bind() when you want that function to later be called with a certain context, useful in events.<br />
+				  	Use .call() or .apply() when you want to invoke the funciton immediately, and modify the context.
+				  </p>
+				</div>
+				<div class="alert alert-success">
+					<!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> -->
+					<strong>Syntax:</strong> function.call(thisArg, arg1, arg2, ...)
+				</div>
+			</div>
 		</div>
-		
-	</div>
-	<div class="col-xs-12 col-sm-4">
-		<div class="page-header">
-		  <h3>Call</h3>
+		<div class="row bg-info">
+			<pre class="bg-success">
+  // 这说明 apply and call 的arguments 都可以是array。
+    let numsAry = [5, 6, 2, 3, 7];
+    let max0 = Math.max(...numsAry);
+    let max1 = Math.max.apply(null, numsAry);
+    let max2 = Math.max.call(null, ...numsAry);
+    console.log(`100 -- max0 is: ${max0}.`);
+    console.log(`101 -- max1 is: ${max1}.`);
+    console.log(`102 -- max2 is: ${max2}.`);
+
+        ------------------------------------------------------------------------
+
+  // change context of this.
+    function AnyProducts(productName, productPrice) {
+        this.pdName = productName;
+        this.pdPrice = productPrice;
+        this.sayWhatitis = function () {
+            console.log(`110 trigger closure -- ${this.pdName} -- ${this.pdPrice} -- ${this.category}.`);
+        };
+        this.sayWhatitis();
+    }
+    function Food(productName, productPrice) {
+        this.category = 'Food_Category';
+        AnyProducts.call(this, productName, productPrice);
+    }
+    function Toy(productName, productPrice) {
+        this.category = 'Toy_Category';
+        let args = [productName, productPrice];
+        AnyProducts.apply(this, args);
+    }
+    let cheese = new Food('ProductName: Great-Cheese', 'Price: $5');
+    let toy0 = new Food('ProductName: Great-Toy', 'Price: $50');
+
+	------------------------------------------------------------------------
+
+    let prsonObj = {
+        pName: 'Wuqiha-Itaqi',
+        pJob: 'SoftWare_Developer.'
+    };
+    function greeting() {
+        let sayThisPerson = [this.pName, 'Is An Excellent', this.pJob].join(' '); 
+        console.log('135 -- '+sayThisPerson);
+    }
+    greeting.call(prsonObj);
+    greeting.apply(prsonObj);
+
+    ------------------------------------------------------------------------
+
+	let people = {
+        work: 'this is work0',
+        describe: function() {
+            console.log(`144 -- Desc: ${this.work}.`);
+        }
+    };
+    let onePerson = {
+        work: 'this is person one work.'
+    };
+    people.describe.call(onePerson);
+    people.describe.apply(onePerson);
+			</pre>
+			<pre>
+	/*jshint loopfunc: true */
+	// Using call to invoke an anonymous function
+        const animals = [
+            { species: 'Lion', name: 'King' },
+            { species: 'Whale', name: 'Fail' }
+        ];
+        for (let i = 0; i < animals.length; i++) {
+            (function(i) {
+                this.print = function() {
+                    console.log('162 - #' + i + ' ' + this.species + ': ' + this.name);
+                };
+                this.print();
+            }).call(animals[i], i);
+        }
+			</pre>
 		</div>
-		
 	</div>
 	<div class="col-xs-12 col-sm-4">
 		<div class="page-header">
 		  <h3>Promise</h3>
+		  <cite class="text-danger">Url is: https://api.myjson.com/bins/18t4jz</cite>
 		</div>
-		
+		<es6-promise-table table-data={{tbdata}}></es6-promise-table>
 	</div>
 </div>

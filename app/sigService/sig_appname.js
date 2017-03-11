@@ -22,6 +22,12 @@
 (function () {
 	var ssM = angular.module('brgpacp.sig.service');
 
-	// ssM
+	ssM.service('resolveDataFromFactoryService', ['getDataPlant', function(getDataPlant){
+		this.$get = function (url, method) {
+			// let url = 'https://api.myjson.com/bins/18t4jz';
+			// let method = 'GET';
+			return getDataPlant.fetchTableData(url, method);
+		};
+	}]);
 
 })();

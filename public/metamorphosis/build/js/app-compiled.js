@@ -34,6 +34,7 @@
 })();
 'use strict';
 
+/*jshint esversion: 6 */
 (function () {
 	var rM = angular.module('brgpacp.router');
 
@@ -79,7 +80,17 @@
 			url: '/acp',
 			templateUrl: './_partials/acp.html',
 			controller: 'acpCtrl',
-			controllerAs: 'acp'
+			controllerAs: 'acp',
+			resolve: {
+				allTableData: ['resolveDataFromFactoryService', function (resolveDataFromFactoryService) {
+					var responseTable = {};
+					var url = 'https://api.myjson.com/bins/18t4jz';
+					var method = 'GET';
+					responseTable = resolveDataFromFactoryService.$get(url, method);
+					console.log('59 -- responseTable: ', responseTable);
+					return responseTable;
+				}]
+			}
 		});
 	}]);
 })();
@@ -91,6 +102,7 @@
 'use strict';
 
 /*jshint esversion: 6 */
+/*jshint loopfunc: true */
 (function () {
     var ctrlM = angular.module('brgpacp.ctrl');
 
@@ -99,7 +111,8 @@
     }]);
 
     ctrlM.controller('homeLeftCtrl', ['$log', function ($log) {
-        $log.log('homeLeft page');{
+        $log.log('homeLeft page');
+        {
             var numAry = [0, 1, 2, 3];
             var total = numAry.reduce(function (preVal, curElement) {
                 return preVal + curElement;
@@ -115,7 +128,7 @@
                 }, []);
             };
             var resultAry = flatten(list0);
-            console.log('26 -- resultAry is: ' + resultAry + '.');
+            console.log('27 -- resultAry is: ' + resultAry + '.');
         }
 
         {
@@ -124,7 +137,7 @@
                 // have {}, need return, without {}, donot need retrun;
                 return Math.round((elem - 32) * 5 / 9);
             });
-            console.log('36 -- celcius is: ' + celcius + '.');
+            console.log('38 -- celcius is: ' + celcius + '.');
         }
 
         {
@@ -133,7 +146,7 @@
             var rzAry = arr0.filter(function (eachElem, idx, newArr) {
                 return eachElem >= 10;
             });
-            console.log('44 -- rzAry is: ' + rzAry + '.');
+            console.log('45 -- rzAry is: ' + rzAry + '.');
         }
     }]);
 
@@ -157,18 +170,18 @@
             };
             var getXfromOutside = sthModule.getX;
             var bindToGetX = getXfromOutside.bind(sthModule);
-            console.log('66 -- bindToGetX() is: ' + bindToGetX() + '.');
+            console.log('69 -- bindToGetX() is: ' + bindToGetX() + '.');
         }
 
         function whenBloomer() {
             this.petalCount = Math.ceil(Math.random() * 12) + 1;
         }
         whenBloomer.prototype.startBloom = function () {
-            console.log('73 -- this is: ', this);
+            console.log('76 -- this is: ', this);
             window.setTimeout(this.Boolmed.bind(this), 2000);
         };
         whenBloomer.prototype.Boolmed = function () {
-            console.log('76 -- I am a beautiful flower with ' + this.petalCount + ' petals!');
+            console.log('80 -- I am a beautiful flower with ' + this.petalCount + ' petals!');
         };
 
         var flower = new whenBloomer();
@@ -179,8 +192,82 @@
         $log.log('bp r');
     }]);
 
-    ctrlM.controller('acpCtrl', ['$log', function ($log) {
+    ctrlM.controller('acpCtrl', ['$log', 'allTableData', '$scope', function ($log, allTableData, $scope) {
         $log.log('acp page');
+        {
+            var _Math$max;
+
+            // 这说明 apply and call 的arguments 都可以是array。
+            var numsAry = [5, 6, 2, 3, 7];
+            var max0 = Math.max.apply(Math, numsAry);
+            var max1 = Math.max.apply(null, numsAry);
+            var max2 = (_Math$max = Math.max).call.apply(_Math$max, [null].concat(numsAry));
+            console.log('100 -- max0 is: ' + max0 + '.');
+            console.log('101 -- max1 is: ' + max1 + '.');
+            console.log('102 -- max2 is: ' + max2 + '.');
+        }
+
+        // change context of this.
+        function AnyProducts(productName, productPrice) {
+            this.pdName = productName;
+            this.pdPrice = productPrice;
+            this.sayWhatitis = function () {
+                console.log('110 trigger closure -- ' + this.pdName + ' -- ' + this.pdPrice + ' -- ' + this.category + '.');
+            };
+            this.sayWhatitis();
+        }
+
+        function Food(productName, productPrice) {
+            this.category = 'Food_Category';
+            AnyProducts.call(this, productName, productPrice);
+        }
+
+        function Toy(productName, productPrice) {
+            this.category = 'Toy_Category';
+            var args = [productName, productPrice];
+            AnyProducts.apply(this, args);
+        }
+        var cheese = new Food('ProductName: Great-Cheese', 'Price: $5');
+        var toy0 = new Food('ProductName: Great-Toy', 'Price: $50');
+
+        var prsonObj = {
+            pName: 'Wuqiha-Itaqi',
+            pJob: 'SoftWare_Developer.'
+        };
+
+        function greeting() {
+            var sayThisPerson = [this.pName, 'Is An Excellent', this.pJob].join(' ');
+            console.log('135 -- ' + sayThisPerson);
+        }
+        greeting.call(prsonObj);
+        greeting.apply(prsonObj);
+
+        {
+            var people = {
+                work: 'this is work0',
+                describe: function describe() {
+                    console.log('144 -- Desc: ' + this.work + '.');
+                }
+            };
+            var onePerson = {
+                work: 'this is person one work.'
+            };
+            people.describe.call(onePerson);
+            people.describe.apply(onePerson);
+        }
+
+        // Using call to invoke an anonymous function
+        var animals = [{ species: 'Lion', name: 'King' }, { species: 'Whale', name: 'Fail' }];
+        for (var i = 0; i < animals.length; i++) {
+            (function (i) {
+                this.print = function () {
+                    console.log('162 - #' + i + ' ' + this.species + ': ' + this.name);
+                };
+                this.print();
+            }).call(animals[i], i);
+        }
+
+        $scope.tbdata = allTableData.data.menu.items;
     }]);
 })();
 'use strict';
@@ -343,6 +430,32 @@
 			link: function link($scope, iElm, iAttrs, controller) {}
 		};
 	}]);
+
+	cdM.directive('es6PromiseTable', [function () {
+		return {
+			scope: {
+				'tableData': '@'
+			},
+			controller: function controller($scope, $element, $attrs, $transclude) {
+				$scope.tbDataObj = angular.fromJson($scope.tableData);
+				console.log('150 -- $scope.tbDataObj: ', $scope.tbDataObj);
+
+				$scope.titles = Object.keys($scope.tbDataObj[0]);
+				console.log('153 -- $scope.titles: ', $scope.titles);
+
+				$scope.tbs = [];
+				$scope.tbDataObj.reduce(function (preVal, currElement) {
+					if (currElement !== null) {
+						$scope.tbs.push(currElement);
+					}
+				});
+			},
+			restrice: 'E',
+			templateUrl: './_partials/directive-tmpl/es6-promise-table.html',
+			// transclude: true,
+			link: function link(iScope, iElem, iAttrs, iCtrl) {}
+		};
+	}]);
 })();
 'use strict';
 
@@ -357,7 +470,26 @@
 (function () {
     var promiseFM = angular.module('brgpacp.promise.factory');
 
-    // promiseFM
+    promiseFM.factory('getDataPlant', ['$http', '$q', function ($http, $q) {
+        var tableDataFactory = {};
+
+        tableDataFactory.fetchTableData = function (theUrl, theMethod) {
+            var _def = $q.defer();
+            var httpObj = {
+                url: theUrl,
+                method: theMethod
+            };
+            $http(httpObj).then(function (res) {
+                _def.resolve(res);
+            }, function (err) {
+                _def.reject(err);
+            });
+
+            return _def.promise;
+        };
+
+        return tableDataFactory;
+    }]);
 })();
 'use strict';
 
@@ -425,7 +557,13 @@
 (function () {
 	var ssM = angular.module('brgpacp.sig.service');
 
-	// ssM
+	ssM.service('resolveDataFromFactoryService', ['getDataPlant', function (getDataPlant) {
+		this.$get = function (url, method) {
+			// let url = 'https://api.myjson.com/bins/18t4jz';
+			// let method = 'GET';
+			return getDataPlant.fetchTableData(url, method);
+		};
+	}]);
 })();
 'use strict';
 

@@ -1,0 +1,38 @@
+<div class="row mlr-0px">
+	<div class="">
+		<table class="table table-striped table-hover wuha-responsive-table">
+			<thead>
+				<tr>
+					<th>
+						{{titles[0]}}
+					</th>
+					<th>
+						{{titles[1]}}
+					</th>
+					<th>
+						{{titles[2]}}
+					</th>
+					<th>
+						{{titles[3]}}
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="dib in tbs track by $index">
+					<td>
+						{{dib.id}}
+					</td>
+					<td>
+						{{dib.label}}
+					</td>
+					<td>
+						{{dib.name}}
+					</td>
+					<td>
+						{{dib.age}}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 (function () {
 	var rM = angular.module('brgpacp.router');
 
@@ -48,7 +49,17 @@
 			url: '/acp',
 			templateUrl: './_partials/acp.html',
 			controller: 'acpCtrl',
-			controllerAs: 'acp'
+			controllerAs: 'acp',
+			resolve: {
+				allTableData: ['resolveDataFromFactoryService', function (resolveDataFromFactoryService) {
+					let responseTable = {};
+					let url = 'https://api.myjson.com/bins/18t4jz';
+					let method = 'GET';
+					responseTable = resolveDataFromFactoryService.$get(url, method);
+					console.log('59 -- responseTable: ', responseTable);
+					return responseTable;
+				}]
+			}
 		});
 
 	}]);

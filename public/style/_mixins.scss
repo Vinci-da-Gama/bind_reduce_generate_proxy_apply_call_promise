@@ -42,16 +42,19 @@
 		left: -9999px;
 	}
 
-	th { display: none; }
+	th { 
+		display: none;
+	}
 	
 	tr { border: 1px solid #ccc; }
 	
 	td { 
 		/* Behave  like a "row" */
 		border: none;
-		border-bottom: 1px solid #eee; 
+		border-bottom: 1px solid #eee;
 		position: relative;
-		padding-left: 60%; 
+		padding-left: 50%;
+		height: 37px;
 	}
 	
 	td:before { 
@@ -63,5 +66,6 @@
 		width: 45%; 
 		padding-right: 10px; 
 		white-space: nowrap;
+		font-weight: bold;
 	}
 }
